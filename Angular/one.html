@@ -1,0 +1,29 @@
+<div>
+    `
+    <div class="bg-light lter b-b wrapper-md">
+        <div class="m-n font-thin"><i class="fa fa-search"></i>简单检索</div>
+    </div>
+    <div class="panel-body" ng-controller="simpleSearchController">
+        <div class="form-group col-sm-6"   ng-repeat="item in simpleSearchList">
+            <div class="control-label">{{item.title}}</div>
+            <div class="input-group  m-b help-block">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{item.condition}} <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="itemSelect in item.select"><a href="">{{itemSelect}}</a ></li>
+                    </ul>
+                </div><!-- /btn-group -->
+                <input id="{{item.idName}}" type="text" placeholder="{{item.value}}" class="form-control">
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="form-group col-sm-6"  ng-repeat="itemSelect in select">
+            <div class="control-label">{{itemSelect.title}}</div>
+                <div class="help-block">
+                    <select class="form-control m-t ng-dirty ng-valid-parse ng-valid ng-valid-required ng-touched" ng-model="f.b" required="" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <option value="" ng-repeat="item in itemSelect.select">{{item}}</option>
+                    </select>
+                </div>
+        </div>
+    </div>
+    `
+</div>

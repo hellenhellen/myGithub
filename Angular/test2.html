@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="changeBg">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+        .box {
+            width: 300px;
+            min-height: 200px;
+            border: 1px solid #ccc;
+        }
+
+    </style>
+</head>
+<body ng-controller="changeBgCtrl">
+<div style="margin-bottom: 10px;" ng-repeat="item in list">
+    <label class="name" ng-bind="item.name"></label>
+    <input class="val" ng-model="item.val" type="text" placeholder="王二"/>
+</div>
+<div style="margin-top: 20px;">
+    <input ng-click="build()" class="build" type="button" value="生成表达式"/>
+    <input type="button" value="追加表达式"/>
+
+    <div class="box">{{bb}}</div>
+</div>
+
+<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script type="text/javascript">
+    var myApp = angular.module('changeBg', []);
+    myApp.controller('changeBgCtrl', ['$scope', function ($scope) {
+        $scope.list = [
+            {name: '姓名', val: ""},
+            {name: '年龄', val: ""},
+            {name: '身高', val: ""}
+        ];
+        $scope.build=function(){
+            var result = '';
+//            for(var i=0;i<$scope.list.length;i++){
+//                var aa=$scope.list[i];
+//                console.log(aa);
+//                if(aa.val !='undefined'){
+//                    var s='('+aa.name+':'+aa.val+')';
+//                }
+//
+//                result += s;
+//            }
+            $scope.list.forEach(function(item,index){
+                if(item.val != ''){
+                    result+=item.name+':'+item.val;
+                }
+            });
+if(result){
+    $scope.bb='('+result+')';
+}else{
+    $scope.bb='';
+
+}
+
+        }
+
+    }]);
+</script>
+</body>
+</html>

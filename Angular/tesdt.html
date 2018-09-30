@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="appModule">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+    <my-hnput></my-hnput>
+<script src="./node_modules/jquery/dist/jquery.js"></script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="./node_modules/angular/angular.js"></script>
+<script>
+    var app=angular.module('appModule',[]);
+    app.controller('simpleSearchController',function ($scope) {
+        $scope.simpleSearchList = [
+            {
+               title:"案号",
+               condition:"AND",
+               value:"请输入案号",
+               idName:"caseNum",
+               select:["AND","OR","NOT"]
+           },
+               {
+                   title:"标题",
+                   condition:"AND",
+                   value:"请输入标题",
+                   idName:"title",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"初三段",
+                   condition:"AND",
+                   value:"请输入初三段",
+                   idName:"firstThree",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"当事人段落",
+                   condition:"AND",
+                   value:"请输入当事人段落",
+                   idName:"litigantPart",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"审理经过",
+                   condition:"AND",
+                   value:"请输入审理经过",
+                   idName:"proceedings",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"诉称及辩称",
+                   condition:"AND",
+                   value:"请输入诉称及辩称",
+                   idName:"argued",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"事实认定",
+                   condition:"AND",
+                   value:"请输入事实认定",
+                   idName:"fact",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"法院意见",
+                   condition:"AND",
+                   value:"请输入法院意见",
+                   idName:"courtConsiders",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"裁判结果",
+                   condition:"OR",
+                   value:"请输入裁判结果",
+                   idName:"result",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title:"律师",
+                   condition:"NOT",
+                   value:"请输入律师名",
+                   idName:"lawyer",
+                   select:["AND","OR","NOT"]
+               },
+               {
+                   title: "律所",
+                   condition: "OR",
+                   value: "请输入律所名",
+                   idName: "office",
+               }
+            ];
+        $scope.select=[{
+            title: "律所",
+            condition: "OR",
+            value: "请输入律所名",
+            idName: "office",
+            select:["AND","OR","NOT"]
+        }];
+    })
+    app.directive('myHnput',function () {
+        return{
+            replace:true,
+            restrict:'E',
+            /*templateUrl:'one.html'*/
+            templateUrl:'one.html'
+        }
+    })
+</script>
+</body>
+</html>
