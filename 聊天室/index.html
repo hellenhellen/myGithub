@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>珠峰聊天室</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <style>
+        .user{
+            color:blue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h2 class="text-center">直播聊天室</h2>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group" id="messages" onclick="handleClick(event)">
+
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group row">
+                            <label for="content" class="control-label col-md-1" >请输入聊天内容</label>
+                            <div class="col-md-11">
+                               <textarea name="content" id="content" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-11">
+                                <button type="button" onclick="send()" class="btn btn-primary">发送</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    // window.io 全局变量
+   var socket = io('http://localhost:8080/');
+   socket.on('connect',function(){
+       console.log('连接成功');
+   });
+   function formatMsg(messageObj){
+       return `<span class="user">${messageObj.username}</span>:${messageObj.content} <span data-_id="${messageObj._id}"  class="glyphicon glyphicon-remove"></span><span class="pull-right"> ${messageObj.createAt}</span>`;
+   }
+   socket.on('message',function(messageObj){
+       let messages = document.querySelector('#messages');
+       let li = document.createElement('li');
+       li.innerHTML = formatMsg(messageObj);
+       li.className = 'list-group-item';
+       messages.appendChild(li);
+   });
+   function send(){
+      var area = document.querySelector('#content');
+      var content = area.value;
+      if(content){
+          socket.send(content);
+          area.value = '';
+      }
+   }
+   socket.emit('getAllMessages');
+   socket.on('allMessages',function(messages){
+       document.querySelector('#messages').innerHTML = messages.map((messageObj)=>
+            `<li class="list-group-item">
+                ${formatMsg(messageObj)}
+             </li>`).join('');
+   })
+
+    function handleClick(event){
+       let cls = event.target.className;
+       let userReg = new RegExp(`(^| +)user($| +)`);
+       let removeReg = new RegExp(`(^| +)glyphicon-remove($| +)`);
+       if(userReg.test(cls)){
+            document.querySelector('#content').value = `@${event.target.innerHTML} `;
+       }else if(removeReg.test(cls)){
+           let _id = event.target.dataset._id;
+           socket.emit('remove',_id);
+       }
+    }
+    socket.on('removed',function(_id){
+        let spans  = document.querySelectorAll('.glyphicon-remove');
+        let span = Array.from(spans).find((span)=>span.dataset._id == _id);
+        if(span){
+            let li = span.parentNode;
+            let ul = li.parentNode;
+            ul.removeChild(li);
+        }
+    });
+</script>
+</body>
+</html>

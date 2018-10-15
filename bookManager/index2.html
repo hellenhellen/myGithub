@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appModule">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">考研书籍</a>
+        </div>
+        <div class="navbar-nav nav">
+                <ul>
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/list">图书列表</a></li>
+                    <li><a href="/manager">管理图书</a></li>
+                    <li><a href="/consult">考研资讯</a></li>
+                </ul>
+        </div>
+    </div>
+</div>
+<div class="container"></div>
+<script src="node_modules/angular/angular.js"></script>
+<script src="node_modules/angular-route/angular-route.js"></script>
+<script src="node_modules/angular-resource/angular-resource.js"></script>
+<script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script>
+    var app=angular.module('appmodule',['ngResource','ngngRoute']);
+    app.factory('Book',function ($resource) {
+        return $resource('/books/:id',null,{
+            updata:{method:'put'}
+        })
+    });
+    app.config(function ($routeProvider) {
+        $routeProvider.when('/',{
+            templateUrl:'tmpl/home.html',
+            controller:'homeCrtl'
+        }).when('list',{
+            templateUrl:'tmpl/list.html',
+            controller:'listCtrl'
+        }).when('/manger',{
+            templateUrl:'tmpl/manger.html',
+            controller:'mangerCtrl'
+        }).when('/consult',{
+            templateUrl:'tmpl/consult.html',
+            controller:'consultCtrl'
+        }).otherwise('/')
+    })
+    app.controller('homeCtrl',function($scope,$sec,Book){
+        $scope.title=$sec.trustAsHtml('<h3>考研书城</h3>');
+        $('.carousel').carousel({interval:2000});
+    })
+</script>
+</body>
+</html>
